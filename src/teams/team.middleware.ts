@@ -3,19 +3,18 @@ import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class TeamMiddleware implements NestMiddleware {
+  private requestCounter = 0;
+
   use(req: Request, res: Response, next: NextFunction) {
-    // You can perform any necessary operations here before passing the request to the route handler.
-    // For example, you can log the incoming request, validate request parameters, or perform authentication checks.
+    // Increment the request counter
+    this.requestCounter++;
 
-    // Example: Log the incoming request method and URL
-    console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+    // Log the incoming request method, URL, and request number
+    console.log(`Incoming request ${this.requestCounter}: ${req.method} ${req.originalUrl}`);
 
-    // Example: Perform authentication check
-    // if (!req.headers.authorization) {
-    //   return res.status(401).json({ message: 'Unauthorized' });
-    // }
+    // Perform any other necessary operations
 
-    // If everything is okay, pass the request to the next middleware or route handler
+    // Pass the request to the next middleware or route handler
     next();
   }
 }
