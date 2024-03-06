@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { Team } from './team.model';
 
@@ -15,5 +15,15 @@ export class TeamsController {
     @Get()
     async findAll(): Promise<Team[]> {
         return this.teamService.getAllTeams();
+    }
+
+    @Get(':id')
+    async findOne(@Param('id') id: string): Promise<Team> {
+        return this.teamService.getTeamById(id);
+    }
+
+    @Get('name/:name')
+    async findByName(@Param('name') name: string): Promise<Team> {
+        return this.teamService.getTeamByName(name);
     }
 }

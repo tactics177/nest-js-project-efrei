@@ -17,5 +17,11 @@ export class TeamService {
         return this.teamModel.find().exec();
     }
 
-    // Implement other CRUD operations as needed
+    async getTeamById(id: string): Promise<Team> {
+        return this.teamModel.findById(id).exec();
+    }
+
+    async getTeamByName(name: string): Promise<Team> {
+        return this.teamModel.findOne({ name }).exec();
+    }
 }

@@ -12,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TeamsController } from './teams/teams.controller';
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI, {dbName: 'football',}), TeamsModule, PlayersModule, MongooseModule.forFeature([{ name: "Team", schema: TeamSchema }])],
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI, {dbName: 'football',}), TeamsModule, PlayersModule, MongooseModule.forFeature([{ name: Team.name, schema: TeamSchema }])],
   controllers: [AppController, FootballController, TeamsController],
   providers: [AppService, TeamService, PlayerServiceService],
 })
