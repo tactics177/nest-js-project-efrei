@@ -12,7 +12,7 @@ import { jwtConstants } from './constants';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '60s' }, // If you wait 60 seconds after authenticating before attempting a GET /auth/profile request, you'll receive a 401 Unauthorized response
     }),
   ],
   providers: [AuthService],
