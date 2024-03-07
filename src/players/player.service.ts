@@ -27,4 +27,14 @@ export class PlayerService {
   async getPlayerByName(name: string): Promise<Player> {
     return this.playerModel.findOne({ name }).exec();
   }
+
+  async updatePlayer(id: string, name: string): Promise<Player> {
+    return this.playerModel
+      .findByIdAndUpdate(id, { name }, { new: true })
+      .exec();
+  }
+
+  async deletePlayer(id: string): Promise<Player> {
+    return this.playerModel.findByIdAndDelete(id).exec();
+  }
 }
