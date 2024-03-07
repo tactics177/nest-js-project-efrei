@@ -1,27 +1,36 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(loginDto: { username: string; password: string }): Promise<any> {
+  async login(loginDto: {
+    username: string;
+    password: string;
+  }): Promise<{ access_token: string }> {
     const { username, password } = loginDto;
 
     // Find user by username
     const user = await this.userModel.findOne({ username }).exec();
 
+    const payload = { username: user.username, sub: user._id };
+
     // Check if user exists and verify the password
     if (user && (await bcrypt.compare(password, user.password))) {
       // Authentication successful
-      return { message: 'Login successful' };
+      return { access_token: await this.jwtService.signAsync(payload) };
     } else {
       // Authentication failed
-      throw new Error('Invalid username or password');
+      throw new UnauthorizedException();
     }
   }
 
